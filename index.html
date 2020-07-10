@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stopwatch</title>
+		 <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"> 
+	<style type="text/css">
+		body{
+			background:#2d2d2d;
+			color:#f6f6f6;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+		}
+		#stopwatch{
+			font-size: 20vw;
+			/*font-family: monospace;*/
+			font-family: 'Share Tech Mono', monospace;
+		}
+		ul{
+			margin:0;
+			padding: 0; 
+		}
+		ul li{
+			list-style: none;
+			padding: 10px 0;
+		}
+	</style>
+</head>
+<body>
+<div class="container text-center col-xs-3 md-3" >
+	<button type="button" class=" btn btn-primary btn-lg" onclick="start()">Start</button>
+	<button type="button" class="btn btn-primary btn-lg" onclick="pause()">Pause</button>
+	<button type="button" class="btn btn-primary btn-lg" onclick="stop()">Stop</button>
+	<button type="button" class="btn btn-primary btn-lg" onclick="restart()">Restart</button>
+	<button type="button" class="btn btn-primary btn-lg" onclick="lap()">Lap</button>
+	<button type="button" class="btn btn-lg btn-primary btn-lg" onclick="resetlaps()">Reset Laps</button>
+</div>
+<div id="stopwatch" class="container md-3">00:00:00</div>
+<ul id="laps"></ul>
+<script type="text/javascript">
+	var ms=0, s=0, m=0,timer=0,cnt=0;
+
+	var stopwatchel=document.getElementById('stopwatch');
+	var lapsContainer=document.getElementById('laps');
+	function start(){
+		if(!timer){
+		timer=setInterval(run,10);
+	}
+	}
+	function run(){
+		stopwatchel.textContent =(m<10? "0"+m:m) + ":" + (s<10? "0"+s:s) + ":"+ (ms<10? "0"+ms:ms);
+		ms++;
+		if(ms==100){
+			ms=0;s++;
+		} 
+		if(s==60){
+			s=0;m++;
+		}
+	}
+	function pause(){
+		clearInterval(timer);
+		timer=false;
+
+	}
+	function stop(){
+		clearInterval(timer);
+		timer=false;
+		s=0;ms=0;m=0;
+		stopwatchel.textContent =(m<10? "0"+m:m) + ":" + (s<10? "0"+s:s) + ":"+ (ms<10? "0"+ms:ms);
+	}
+	function getTimer(){
+		return (m<10? "0"+m:m) + ":" + (s<10? "0"+s:s) + ":"+ (ms<10? "0"+ms:ms);
+	}
+	function restart(){
+		stop();
+		start();
+	}
+	function lap(){
+		if(timer){
+			var li = document.createElement('li');
+			li.innerText= getTimer();
+			lapsContainer.appendChild(li);cnt++;
+		}
+		if(cnt>4){
+			lapsContainer.removeChild(lapsContainer.firstChild);
+			
+		}
+
+	}
+	function resetlaps(){
+		lapsContainer.innerHTML='';
+	}
+
+</script>
+</body>
+</html>
